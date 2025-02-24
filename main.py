@@ -42,7 +42,7 @@ def get_chrome_options(headless=True):
 
     options.add_argument("--remote-debugging-port=9222")
     options.add_argument("--disable-extensions")
-    options.add_argument("--disable-gpu")
+    # options.add_argument("--disable-gpu")
     # options.add_argument("--no-sandbox")  # Required for non-root users
     # options.add_argument("--disable-dev-shm-usage")  # Prevents shared memory issues
     return options
@@ -77,9 +77,9 @@ def scrape_nitter(keyword, max_tweets=10):
     try:
         driver.get(search_url)
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[class*='tweet-content']"))
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.tweet-content"))
         )
-        tweet_elements = driver.find_elements(By.CSS_SELECTOR, "div[class*='tweet-content']")
+        tweet_elements = driver.find_elements(By.CSS_SELECTOR, "div.tweet-content")
 
         tweet_display = st.empty()  # Placeholder for updating UI
         for i, tweet in enumerate(tweet_elements):
