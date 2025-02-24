@@ -43,8 +43,8 @@ def get_chrome_options(headless=True):
     options.add_argument("--remote-debugging-port=9222")
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")  # Required for non-root users
-    options.add_argument("--disable-dev-shm-usage")  # Prevents shared memory issues
+    # options.add_argument("--no-sandbox")  # Required for non-root users
+    # options.add_argument("--disable-dev-shm-usage")  # Prevents shared memory issues
     return options
 
 
