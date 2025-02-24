@@ -77,9 +77,9 @@ def scrape_nitter(keyword, max_tweets=10):
     try:
         driver.get(search_url)
         WebDriverWait(driver, 10).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div.tweet-content"))
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[class*='tweet-content']"))
         )
-        tweet_elements = driver.find_elements(By.CSS_SELECTOR, "div.tweet-content")
+        tweet_elements = driver.find_elements(By.CSS_SELECTOR, "div[class*='tweet-content']")
 
         tweet_display = st.empty()  # Placeholder for updating UI
         for i, tweet in enumerate(tweet_elements):
