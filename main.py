@@ -43,6 +43,8 @@ def get_chrome_options(headless=True):
     options.add_argument("--remote-debugging-port=9222")
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")  # Required for non-root users
+    options.add_argument("--disable-dev-shm-usage")  # Prevents shared memory issues
     return options
 
 
@@ -95,7 +97,7 @@ def scrape_nitter(keyword, max_tweets=10):
     return tweets
 
 
-def fetch_feed(query, days=2):
+def fetch_feed(query, days=5):
     """
     Fetch the RSS feed for a given query and filter out news older than 'days' days.
 
@@ -107,7 +109,7 @@ def fetch_feed(query, days=2):
         tuple: (query, list of filtered feed entries)
     """
     # Use quote_plus to safely encode the query
-    encoded_query = quote_plus(query + " usa")
+    encoded_query = quote_plus(query)
     rss_url = f"https://news.google.com/rss/search?q={encoded_query}+usa"
     feed = feedparser.parse(rss_url)
     filtered_entries = []
@@ -192,8 +194,8 @@ def trump_scraper():
 
 def convert_json_to_csv(json_data):
     data_list = []
-    if "List of Affected Business categories" in json_data:
-        for item in json_data["List of Affected Business categories"]:
+    if "List of Affected Business Categories" in json_data:
+        for item in json_data["List of Affected Business Categories"]:
             data_list.append({
                 "Business Category Name": item["Business Category Name"],
                 "NAIC Code": item["NAIC Code"],
@@ -281,7 +283,7 @@ def main():
                         except Exception as exc:
                             logging.error(f"Query '{query}' generated an exception: {exc}")
                             status.update(label=f"⚠️ Error fetching news for {query}")
-
+                print(feed_results)
                 # Scrape tweets from Nitter sequentially
                 for query in keyword_list:
                     try:
@@ -314,7 +316,7 @@ def main():
                 # Process combined data for AI or further analysis
                 response_json = choose_relevant_niches(combined_data)
                 st.session_state.response_json = response_json
-                st.json(response_json)
+                # st.json(response_json)
 
                 # Convert JSON to CSV and store in session_state
                 df = convert_json_to_csv(response_json)

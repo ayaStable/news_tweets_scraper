@@ -2,3 +2,7 @@ __pycache__/
 .env
 .venv
 .idea
+data.json
+data.txt
+scraped_data.xlsx
+llm_response.json

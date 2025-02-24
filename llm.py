@@ -59,7 +59,7 @@ def choose_relevant_niches(scraped_data, batch_size=300):
     Output Structure, return your answer in json format:
     
     Summary of Key Findings: Provide a brief overview of the major insights drawn from the scraped data.
-    List of Affected Business categories: For each category from the provided list that is affected, include:
+    List of Affected Business Categories: For each category from the provided list that is affected, include:
     Business Category Name
     NAIC Code
     Affected Commodities: Specific commodities from the data that are relevant.
