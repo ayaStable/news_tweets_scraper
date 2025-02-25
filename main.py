@@ -26,11 +26,11 @@ def get_chrome_options(headless=True):
     options = webdriver.ChromeOptions()
 
     # Set DNS over HTTPS configuration
-    local_state = {
-        "dns_over_https.mode": "secure",
-        "dns_over_https.templates": "https://chrome.cloudflare-dns.com/dns-query",
-    }
-    options.add_experimental_option('localState', local_state)
+    # local_state = {
+    #     "dns_over_https.mode": "secure",
+    #     "dns_over_https.templates": "https://chrome.cloudflare-dns.com/dns-query",
+    # }
+    # options.add_experimental_option('localState', local_state)
 
     # Configure user agent
     user_agent = ('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
