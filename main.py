@@ -81,7 +81,7 @@ def scrape_nitter(keyword, max_tweets=10):
         )
         tweet_elements = driver.find_elements(By.CSS_SELECTOR, "div.tweet-content")
 
-        tweet_display = st.empty()  # Placeholder for updating UI
+        # tweet_display = st.empty()  # Placeholder for updating UI
         for i, tweet in enumerate(tweet_elements):
             if i >= max_tweets:
                 break
@@ -91,6 +91,7 @@ def scrape_nitter(keyword, max_tweets=10):
 
     except Exception as e:
         st.error(f"Error scraping Nitter: {e}")
+        print(f"ERRORRR: {e}")
     finally:
         driver.quit()
 
