@@ -90,8 +90,8 @@ def scrape_nitter(keyword, max_tweets=10):
             time.sleep(0.5)  # Simulate live updates
 
     except Exception as e:
-        st.error(f"Error scraping Nitter: {e}")
-        logging.error(f"Error scraping Nitter: {e}")
+        st.error(f"Error scraping Nitter: {str(e)}")
+        logging.error(f"Error scraping Nitter: {str(e)}")
     finally:
         driver.quit()
 
