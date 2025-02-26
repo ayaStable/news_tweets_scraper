@@ -15,6 +15,7 @@ from llm import choose_relevant_niches
 import streamlit as st
 import pandas as pd
 import io
+from openpyxl import load_workbook
 
 
 NITTER_INSTANCE = "https://nitter.space"
@@ -199,6 +200,8 @@ def trump_scraper():
 
 def convert_json_to_csv(json_data):
     data_list = []
+
+    # Process "List of Affected Business Categories"
     if "List of Affected Business Categories" in json_data:
         for item in json_data["List of Affected Business Categories"]:
             data_list.append({
@@ -207,13 +210,28 @@ def convert_json_to_csv(json_data):
                 "Affected Commodities": ", ".join(item["Affected Commodities"]),
                 "Potential Impact": item["Potential Impact"]
             })
-    print(data_list)
+
+    # Convert to DataFrame
     df = pd.DataFrame(data_list)
-    return df
+
+    # Convert DataFrame to CSV format (string buffer)
+    csv_buffer = io.StringIO()
+    df.to_csv(csv_buffer, index=False)
+
+    # Append two new lines and the summary
+    summary_text = json_data.get("Summary of Key Findings", "")
+    csv_buffer.write("\n\nSummary of Key Findings:\n")
+    csv_buffer.write(f'"{summary_text}"\n')
+
+    # Encode the final CSV content
+    csv_data = csv_buffer.getvalue().encode("utf-8")
+
+    return csv_data
 
 
 def save_scrapes_to_excel(combined_data):
     output = io.BytesIO()
+
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
         # Process news_feeds: Flatten data from each category
         news_rows = []
@@ -250,8 +268,27 @@ def save_scrapes_to_excel(combined_data):
         df_trump = pd.DataFrame(trump_rows)
         df_trump.to_excel(writer, sheet_name="Trump Tweets", index=False)
 
-    # Ensure the buffer's pointer is at the beginning before returning
+    # Load the workbook to modify it after writing
     output.seek(0)
+    workbook = load_workbook(output)
+
+    # Function to append a note in the first empty row
+    def add_note(sheet_name, note_text):
+        sheet = workbook[sheet_name]
+        max_row = sheet.max_row
+        sheet.cell(row=max_row + 2, column=1, value=note_text)  # Two rows after table
+
+    # Add notes to "Tweets" and "Trump Tweets" sheets
+    add_note("Tweets",
+             "*Note that the tweets are not filtered on our side for relevancy, it only returns the most recent posts containing keywords provided by a user. So, knowing the nature of social networks, there might be irrelevant silly tweets.")
+    add_note("Trump Tweets",
+             "*Note that Trump tweets are not filtered by keywords, it is just the last 10 tweets of Trump.")
+
+    # Save the modified workbook
+    output = io.BytesIO()
+    workbook.save(output)
+    output.seek(0)
+
     return output.getvalue()
 
 
@@ -324,8 +361,7 @@ def main():
                 # st.json(response_json)
 
                 # Convert JSON to CSV and store in session_state
-                df = convert_json_to_csv(response_json)
-                csv_data = df.to_csv(index=False).encode("utf-8")
+                csv_data = convert_json_to_csv(response_json)
                 st.session_state.csv_data = csv_data
 
                 # Create Excel data and store in session_state
