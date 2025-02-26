@@ -17,7 +17,7 @@ import pandas as pd
 import io
 
 
-NITTER_INSTANCE = "https://nitter.poast.org"
+NITTER_INSTANCE = "https://nitter.space"
 TRUMP_LINK = "https://truthsocial.com/@realDonaldTrump"
 
 
