@@ -342,7 +342,7 @@ def main():
         st.download_button(
             "Download CSV with identified categories",
             st.session_state.csv_data,
-            "scraped_data.csv",
+            "suggested_categories.csv",
             "text/csv"
         )
         st.download_button(
