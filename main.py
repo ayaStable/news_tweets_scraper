@@ -41,10 +41,14 @@ def get_chrome_options(headless=True):
         options.add_argument("--headless")
 
     options.add_argument("--remote-debugging-port=9222")
-    options.add_argument("--disable-extensions")
     options.add_argument("--disable-gpu")
-    # options.add_argument("--no-sandbox")  # Required for non-root users
-    # options.add_argument("--disable-dev-shm-usage")  # Prevents shared memory issues
+    options.add_argument("--no-sandbox")  # Required for Streamlit Cloud
+    options.add_argument("--disable-dev-shm-usage")  # Use disk instead of memory
+    options.add_argument("--disable-extensions")  # Reduce memory usage
+    options.add_argument("--disable-background-timer-throttling")
+    options.add_argument("--disable-backgrounding-occluded-windows")
+    options.add_argument("--disable-renderer-backgrounding")
+    options.add_argument("--window-size=1280,800")  # Avoid viewport errors
     return options
 
 
