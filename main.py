@@ -279,6 +279,8 @@ def save_scrapes_to_excel(combined_data):
         sheet.cell(row=max_row + 2, column=1, value=note_text)  # Two rows after table
 
     # Add notes to "Tweets" and "Trump Tweets" sheets
+    add_note("News Feeds",
+             "* If it's empty, there are no related news to the keywords within 5 past days.")
     add_note("Tweets",
              "*Note that the tweets are not filtered on our side for relevancy, it only returns the most recent posts containing keywords provided by a user. So, knowing the nature of social networks, there might be irrelevant silly tweets.")
     add_note("Trump Tweets",
