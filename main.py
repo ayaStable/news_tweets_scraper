@@ -18,7 +18,7 @@ import io
 from openpyxl import load_workbook
 
 
-NITTER_INSTANCE = "https://xcancel.com"
+NITTER_INSTANCE = "https://lightbrd.com"
 TRUMP_LINK = "https://truthsocial.com/@realDonaldTrump"
 
 
